@@ -2,6 +2,9 @@ const express = require("express");
 const app = express();
 const {Controller} = require("./Controller");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+
+app.use(cors());
 
 app.use(bodyParser.json());
 
@@ -45,6 +48,12 @@ Peoples
 app.post("/peoples", function(req, res) {
     let { people } = req.body;
     Controller.setPeople(people, res);
+})
+
+//PRUEBA DE RUTA DE AUTENTICACIÓN
+app.post("/auth", function(req, res){
+    let people = req.body;
+    Controller.getAuth(people, res);
 })
 
 app.get("/peoples", function(req, res){

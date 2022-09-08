@@ -91,6 +91,25 @@ class Controller{
         });
     }
 
+    getAuth(people, res){
+        let {username, password} = people;
+        console.log(username, password);
+        People.findOne({username}, (err, people) => {
+            if(err){
+                res.status(500).send("Error de autenticación de usuario");
+            }
+            else if(!people){
+                res.status(500).send("Usuario invalido");
+            }
+            else{
+                if (password == people.password)
+                    res.status(200).send("Ingreso valido");
+                else
+                    res.status(500).send("Usuario invalido");
+            }
+        })
+    }
+
     getPeoples(res){
         People.find({}, (err, peoples)=>{
 
