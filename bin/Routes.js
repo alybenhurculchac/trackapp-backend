@@ -79,6 +79,42 @@ app.delete("/peoples/:id", function(req, res){
 /Peoples 
 */
 
+
+
+
+/*
+Roles------------------------------------------------------ 
+*/
+app.post("/roles", function(req, res) {
+    let { role } = req.body;
+    Controller.setRole(role, res);
+})
+
+app.get("/roles", function(req, res){
+    Controller.getRoles(res);
+})
+
+app.get("/peoples/:id", function(req, res){
+    let { id } = req.params;
+    Controller.getPeople(id, res);
+})
+
+app.put("/peoples/:id", function(req, res){
+    let people = req.body.people;
+    people.id = req.params.id;
+    Controller.updatePeople(people, res);
+});
+
+app.delete("/peoples/:id", function(req, res){
+    let { id } = req.params;
+    Controller.deletePeople(id, res);
+})
+/*
+/Roles------------------------------------------------------  
+*/
+
+
+
 /* -------------------------period petitions------------------------- */
 //create period
 app.post("/periods", function(req, res) {

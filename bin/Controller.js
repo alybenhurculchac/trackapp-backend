@@ -11,7 +11,7 @@ const Student = require("../bin/models/Student");
 const Subtopic = require("../bin/models/Subtopic");
 const Teacher = require("../bin/models/Teacher");
 const Topic = require("../bin/models/Topic");
-
+const Role = require("../bin/models/Role");
 
 class Controller{
 
@@ -22,7 +22,8 @@ class Controller{
     async connect(){
         try{
             await mongoose.connect(
-                "mongodb+srv://acorderofalco58:TEACHdev2021.@cluster0.3okjxa2.mongodb.net/trackapp?retryWrites=true&w=majority",
+                // "mongodb+srv://acorderofalco58:TEACHdev2021.@cluster0.3okjxa2.mongodb.net/trackapp?retryWrites=true&w=majority",
+                "mongodb://acorderofalco58:TEACHdev2021.@ac-wq3ku25-shard-00-00.3okjxa2.mongodb.net:27017,ac-wq3ku25-shard-00-01.3okjxa2.mongodb.net:27017,ac-wq3ku25-shard-00-02.3okjxa2.mongodb.net:27017/trackapp?ssl=true&replicaSet=atlas-twthjd-shard-0&authSource=admin&retryWrites=true&w=majority",
                 {useNewUrlParser:true}
             );
             console.log('conectado');
@@ -153,6 +154,66 @@ class Controller{
     /*
     /Webmaster
     */
+
+
+
+    /*
+    rol-------------------------------------------------------
+    */
+    setRole(role, res) {
+        Role.create(role, function(err, newRole) {
+            if (err) throw err;
+
+            res.send({status: 200, nU: newRole});
+        });
+    }
+
+    getRoles(res){
+        Role.find({}, (err, roles)=>{
+
+            if(err) throw err;
+
+            res.send( roles );
+        });
+    }
+
+    getPeople(id, res){
+
+        People.find({_id : id}, (err, people)=>{
+
+            if(err) throw err;
+
+            res.send( {People : people} );
+        })
+    }
+
+    updatePeople(people, res) {
+        let { id, name, last_name, gender } = people;
+        People.updateOne(
+            {_id: id},
+            {$set: {name: name, last_name: last_name, gender:gender}}
+            )
+            .then(rawResponse => {
+                res.send({ message: "People updated", raw: rawResponse })
+            })
+            .catch(err => {
+                if(err) throw err;
+            });
+            ;
+    }
+
+    deletePeople(id, res){
+        People.deleteOne({_id : id}, (err)=>{
+            if(err) throw err;
+            res.send( {message : "People has been deleted"} );
+        })
+    }
+    /*
+    /rol-----------------------------------------------------------
+    */
+
+
+
 
     /*------------------------------------CRUD PERIOD------------------------------------*/
     //CREATE
